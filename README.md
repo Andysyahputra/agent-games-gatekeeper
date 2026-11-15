@@ -54,9 +54,16 @@ No account, wallet, or key was created by this build. No money spent.
 1. **HMAC first:** `x-agent-games-signature` is verified against the RAW
    body before any parsing. Bad/missing → 401. No secret → 503.
    Convention: lowercase hex HMAC-SHA256(secret, rawBody); an optional
-   `sha256=` prefix is tolerated. Secret encoding: 64 hex chars → raw
-   32 bytes; base64 decoding to 32 bytes → raw bytes; else UTF-8 bytes
-   of the string. See `lib/hmac.js`.
+   `sha256=` prefix and base64 digests are tolerated. Secret encoding:
+   the platform shows the secret once as a 64-char hex string and signs
+   with the **UTF-8 bytes of that string** — proven by preflight 401s on
+   2026-11-15 with two rotated secrets when the endpoint hex-decoded it.
+   `lib/hmac.js` now tries every plausible reading (UTF-8 string, then
+   hex-decoded, then base64-decoded 32 bytes) and signs each response
+   with the SAME reading that verified the request, so the platform can
+   verify our signature with its own convention. See `lib/hmac.js` and
+   `test/hmac-conventions.mjs` (4/4: UTF-8 reading → 200, hex reading →
+   200, bad sig → 401, health → 200).
 2. **Idempotency:** `task_id` is the idempotency key. A redelivery
    returns the byte-identical cached response (same body + signature).
 3. **Trap checks** (first failing trap wins as `reason_code`):
