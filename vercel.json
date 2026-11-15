@@ -1,0 +1,1 @@
+{"functions":{"api/index.js":{"includeFiles":"circuits/{gatekeeper.wasm,gatekeeper_final.zkey,vk.json}","maxDuration":10,"memory":1024}}}

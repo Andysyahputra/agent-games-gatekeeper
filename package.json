@@ -1,0 +1,1 @@
+{"dependencies":{"snarkjs":"0.7.6"},"description":"zkVerify Agent Games — Proof Gatekeeper agent endpoint (Groth16 proof of decision)","devDependencies":{"circomlibjs":"0.1.7"},"engines":{"node":">=18"},"main":"server.js","name":"agent-games-gatekeeper","private":true,"scripts":{"start":"node server.js","test":"node test/run-tests.mjs"},"type":"commonjs","version":"1.0.0"}
